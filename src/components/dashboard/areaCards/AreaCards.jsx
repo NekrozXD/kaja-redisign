@@ -21,7 +21,7 @@ const AreaCards = () => {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 1000);
+    const intervalId = setInterval(fetchData, 50000);
  
     return () => clearInterval(intervalId);
   }, []);
@@ -32,11 +32,11 @@ const AreaCards = () => {
 
   const totalEmployees = parseInt(attendanceData.employee_total);
   const presentEmployees = attendanceData.attendance.filter(employee => employee.presence);
-  const absentEmployees = attendanceData.attendance.filter(employee => !employee.presence).length;
+  const absentEmployees = attendanceData.attendance.filter(employee => !employee.presence);
   const lateEmployees = parseInt(attendanceData.employee_retard);
 
   const presentPercentage = totalEmployees > 0 ? ((presentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
-  const absentPercentage = totalEmployees > 0 ? ((absentEmployees / totalEmployees) * 100).toFixed(2) : 0;
+  const absentPercentage = totalEmployees > 0 ? ((absentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
   const latePercentage = totalEmployees > 0 ? ((lateEmployees / totalEmployees) * 100).toFixed(2) : 0;
 
   return (
@@ -59,6 +59,7 @@ const AreaCards = () => {
         }}
         hoverContent={'show'}
         onClick={() => {
+       
           Swal.fire({
             title: 'Present Employees',
             html: `<ul>${presentEmployees.map(employee => `<li>${employee.employee}</li>`).join('')}</ul>`,
@@ -70,14 +71,27 @@ const AreaCards = () => {
         }}
       />
       <AreaCard
-        colors={["#e4e8ef", "#4ce13f"]}
-        percentFillValue={absentPercentage}
-        cardInfo={{
-          title: "Absent",
-          value: absentEmployees,
-          text: "Absent employee",
-        }}
-      />
+  colors={["#e4e8ef", "#4ce13f"]}
+  percentFillValue={absentPercentage}
+  cardInfo={{
+    title: "Absent",
+    value: absentEmployees.length,
+    text: "Absent employee",
+  }}
+  hoverContent={'show'}
+  onClick={() => {
+    console.log('Absent Employees:', absentEmployees);
+    Swal.fire({
+      title: 'Absent Employees',
+      html: `<ul>${absentEmployees.map(employee => `<li>${employee.employee}</li>`).join('')}</ul>`,
+      icon: 'info',
+      showCloseButton: true,
+      showCancelButton: false,
+      focusConfirm: false,
+    });
+  }}
+/>
+
       <AreaCard
         colors={["#e4e8ef", "#f29a2e"]}
         percentFillValue={latePercentage}

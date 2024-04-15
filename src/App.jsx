@@ -7,6 +7,7 @@ import MoonIcon from "./assets/icons/moon.svg";
 import SunIcon from "./assets/icons/sun.svg";
 import BaseLayout from "./layout/BaseLayout";
 import { Dashboard, PageNotFound } from "./screens";
+import { DepartementScreen } from "./screens/departement/departement";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -27,6 +28,7 @@ function App() {
           <Route element={<BaseLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<PageNotFound />} />
+            <Route path="/department" element={<DepartementScreen />} />
           </Route>
         </Routes>
 

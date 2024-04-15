@@ -5,8 +5,9 @@ import {
   Cell,
   Tooltip,
 } from "recharts";
+import { useState } from "react";
 
-const AreaCard = ({ colors, percentFillValue, cardInfo }) => {
+const AreaCard = ({ colors, percentFillValue, cardInfo, hoverContent, onClick }) => {
   const filledValue = (percentFillValue / 100) * 360; // 360 degress for a full circle
   const remainedValue = 360 - filledValue;
 
@@ -19,8 +20,15 @@ const AreaCard = ({ colors, percentFillValue, cardInfo }) => {
     return `${(value / 360) * 100} %`;
   };
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="area-card">
+    <div
+      className="area-card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+    >
       <div className="area-card-info">
         <h5 className="info-title">{cardInfo.title}</h5>
         <div className="info-value">{cardInfo.value}</div>
@@ -50,6 +58,11 @@ const AreaCard = ({ colors, percentFillValue, cardInfo }) => {
           <Tooltip formatter={renderTooltipContent} />
         </PieChart>
       </div>
+      {isHovered && (
+        <div className="hover-content">
+          {hoverContent}
+        </div>
+      )}
     </div>
   );
 };
@@ -60,4 +73,6 @@ AreaCard.propTypes = {
   colors: PropTypes.array.isRequired,
   percentFillValue: PropTypes.number.isRequired,
   cardInfo: PropTypes.object.isRequired,
+  hoverContent: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired,
 };

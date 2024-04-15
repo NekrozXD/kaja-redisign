@@ -1,0 +1,27 @@
+.departement {
+    color: var(--base-text-color);
+    td, th {
+        height: 50px;
+        border-bottom: 1px solid grey;
+    }
+     table {
+        border-collapse: collapse;
+        text-align: center;
+     }
+
+     button {
+        padding: 15px;
+        border-radius: 4px;
+     }
+
+     .delete {
+        background-color: red;
+        color : white
+     }
+
+     .edit {
+        background-color: var(--blue-color);
+        margin-right: 5px;
+        color: white;
+     }
+}

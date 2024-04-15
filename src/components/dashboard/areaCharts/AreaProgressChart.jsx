@@ -6,22 +6,22 @@ const data = [
   },
   {
     id: 2,
-    name: "Shirts",
+    name: "Avotra",
     percentValues: 40,
   },
   {
     id: 3,
-    name: "Belts",
+    name: "Kaja",
     percentValues: 60,
   },
   {
     id: 4,
-    name: "Caps",
+    name: "Fandresena",
     percentValues: 80,
   },
   {
     id: 5,
-    name: "Others",
+    name: "Heri",
     percentValues: 20,
   },
 ];
@@ -30,7 +30,7 @@ const AreaProgressChart = () => {
   return (
     <div className="progress-bar">
       <div className="progress-bar-info">
-        <h4 className="progress-bar-title">Most Sold Items</h4>
+        <h4 className="progress-bar-title">Most efficient employee</h4>
       </div>
       <div className="progress-bar-list">
         {data?.map((progressbar) => {

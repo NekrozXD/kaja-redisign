@@ -4,7 +4,7 @@
 /*** Common variables ***/
 :root {
   // colors
-  --blue-color: #475be8;
+  --blue-color: #50b64a;
   --green-color: #4ce13f;
   --orange-color: #f29a2e;
   --red-color: #ef0606;
@@ -19,15 +19,16 @@
   // transition
   --default-transition: all 300ms ease-in-out;
   // chart
-  --chart-primary-color: #475be8;
+  --chart-primary-color: #50b64a;
   --chart-secondary-color: #e6e6e6;
   // box shadow
   --light-shadow1: rgba(0, 0, 0, 0.02) 0px 4px 12px;
+  
 }
 
 // color mode toggle mixins
 @mixin lightMode {
-  --primary-color: #475be8;
+  --primary-color: #50b64a;
   --secondary-color: #fff;
   --background-color: #fafafa;
   --side-link-hover-color: #f6f6f6;
@@ -46,10 +47,12 @@
   --tbl-border-color: #f2f4ff;
   --scroll-track-bg-color: #fff;
   --scroll-thumb-bg-color: #e9e9e9;
+  --logo:url('./assets/images/darklogo.png');
+  --blue-color: #343ccf
 }
 
 @mixin darkMode {
-  --primary-color: #475be8;
+  --primary-color: #50b64a;
   --secondary-color: #2e2e48;
   --background-color: #383854;
   --side-link-hover-color: #525270;
@@ -68,6 +71,8 @@
   --tbl-border-color: ##383854;
   --scroll-track-bg-color: #2e2e48;
   --scroll-thumb-bg-color: #575777;
+  --logo:url('./assets/images/lightlogo.png');
+  --blue-color: #343ccf
 }
 
 * {

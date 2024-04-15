@@ -122,6 +122,9 @@
     border-radius: 12px;
     color: var(--side-text-color);
     transition: var(--default-transition);
+    text-decoration: none; /* Remove underline */
+    padding: 0.5rem 1rem; /* Adjust padding */
+    margin: 0; /* Remove margin */
 
     @media(max-width: 1200px){
         padding: 2px;
@@ -179,4 +182,12 @@
   .sidebar-menu2{
     margin-top: auto;
   }
+}
+
+.CT-motors{
+  background-image: var(--logo) !important;
+  height: 50px;
+  width: 150px;
+  background-position: 50% 50%;
+  background-size: cover;
 }

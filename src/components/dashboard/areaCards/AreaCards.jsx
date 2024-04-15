@@ -3,6 +3,7 @@ import axios from 'axios';
 import AreaCard from "./AreaCard";
 import "./AreaCards.scss";
 import Swal from 'sweetalert2';
+import { useRef } from 'react';
 
 const AreaCards = () => {
   const [attendanceData, setAttendanceData] = useState(null);

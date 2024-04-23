@@ -62,7 +62,7 @@ const Sidebar = () => {
         </Link>
       </li>
       <li className="menu-item">
-        <Link to="/" className="menu-link">
+      <Link to="/society" className={`menu-link ${activeLink === "/society" ? "active" : ""}`} onClick={() => handleMenuClick("/society")}>
           <span className="menu-link-icon">
             <MdBusiness size={20} />
           </span>
@@ -78,7 +78,7 @@ const Sidebar = () => {
         </Link>
       </li>
       <li className="menu-item">
-      <Link to="/users" className={`menu-link ${activeLink === "/users" ? "active" : ""}`} onClick={() => handleMenuClick("/users")}>
+      <Link to="/user" className={`menu-link ${activeLink === "/user" ? "active" : ""}`} onClick={() => handleMenuClick("/user")}>
           <span className="menu-link-icon">
             <MdPeople size={18} />
           </span>

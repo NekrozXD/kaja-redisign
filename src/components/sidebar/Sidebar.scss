@@ -41,7 +41,7 @@
 
   // hiding full on small screen
   @media(max-width: 768px){
-    width: 260px;
+    width: 50px;
     transform: translateX(-100%);
   }
 
@@ -74,6 +74,20 @@
         display: inline-block;
     }
   }
+
+  
+.CT-motors{
+  background-image: var(--logo) !important;
+  height: 50px;
+  width: 150px;
+  background-position: 50% 50%;
+  background-size: cover;
+
+  @media (max-width:'1200px') {
+    height: 25px;
+    width: 50px;
+  }
+}
 
   .sidebar-close-btn{
     background-color: var(--toggle-btn-bg-color);
@@ -182,12 +196,4 @@
   .sidebar-menu2{
     margin-top: auto;
   }
-}
-
-.CT-motors{
-  background-image: var(--logo) !important;
-  height: 50px;
-  width: 150px;
-  background-position: 50% 50%;
-  background-size: cover;
 }

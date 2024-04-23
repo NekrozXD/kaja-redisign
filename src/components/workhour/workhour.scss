@@ -1,0 +1,194 @@
+
+.workhour-form {
+    font-family: Arial, sans-serif;
+    color:var(--base-text-color);
+    background-color: var(--secondary-color);
+    box-shadow: var(--light-shadow1);
+    padding: 15px;
+    .day-checkbox {
+        display: inline-block;
+        cursor: pointer;
+        padding: 5px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .day-checkbox.checked {
+        background-color: #007bff;
+        color: white;
+    }
+    .form-group {
+      margin-bottom: 15px;
+  
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+  
+      input[type="text"],
+      input[type="time"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+  
+      .day-checkbox {
+        display: inline-block;
+        margin-right: 10px;
+        cursor: pointer;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+  
+        &.checked {
+          background-color: #007bff;
+          color: white;
+        }
+      }
+    }
+  
+    button {
+      padding: 8px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  
+    .workhourlines {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+  
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+  
+      th {
+        background-color: var(--thead-bg-color);
+      }
+    }
+  
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+  
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+    .workhourlines {
+        margin-top: 20px;
+        input[type="time"] {
+            width: calc(100% - 1px);
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+          }
+          th{
+            background-color: var(--thead-bg-color);
+          }
+          table{
+            border: none;
+          }
+
+        .row {
+          display: flex;
+          flex-wrap: wrap;
+          margin-bottom: 10px;
+          .col-label {
+            flex: 0 0 25%;
+            text-align: right;
+            padding-right: 10px;
+          }
+          .col {
+            flex: 1;
+            padding: 5px;
+    
+            &:first-child {
+              flex: 0 0 25%;
+              text-align: right;
+              padding-right: 10px;
+            }
+    
+            &:not(:first-child) {
+              flex: 0 0 calc(75% / 4 - 10px);
+              padding-right: 10px;
+            }
+    
+            input[type="time"] {
+              width: 100%;
+              padding: 6px 10px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    
+  }
+  
+  .workhourList{
+    margin-top: 20px;
+    background-color: var(--secondary-color);
+    box-shadow: var(--light-shadow1);
+    color: var(--base-text-color);
+    padding: 20px;
+    gap: 10px;
+    td,th {
+        border-top:1px solid grey !important;
+        height: 50px !important;
+    }
+    table{
+        border-collapse: collapse !important;
+        margin-top: 5px;
+    }
+    div {
+        margin-top: 25px;
+        background-color: var(--div-smoke); /* Use the variable here */
+        padding: 15px;
+        box-shadow: var(--box-shadow);
+      }
+    header {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 150px;
+    }
+    header span{
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+    
+    header button{
+        margin-left: auto;
+    }
+    .delete{
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: red;
+    }
+  }

@@ -1,7 +1,7 @@
 // DepartmentComponent.js
 
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
@@ -136,8 +136,8 @@ export const DepartmentComponent = () => {
 
     return (
         <div className='departement' style={{backgroundColor:'var(--secondary-color)', padding:'15px', maxHeight:'90vh', minHeight:'90vh', width:'100%'}}>
-        <Row>
-            <Col>
+        <div>
+            <div>
                 <Container>
                     <DepartmentDialog
                         open={open}
@@ -152,8 +152,8 @@ export const DepartmentComponent = () => {
                         createDepartment={handleCreate}
                     />
                 </Container>
-            </Col>
-            <Col md={7} className="bg-transparent">
+            </div>
+            <div className="bg-transparent">
                 <div className='department-table bg-transparent' style={{backgroundColor:'transparent',border:'none'}}>
                     <header style={{backgroundColor:'var(--thead-bg-color)', padding: '10px', textAlign: 'center', color: 'white', fontWeight: 'bolder', display:'flex' , textAlign:'center', justifyContent:'center', alignItems:'center', color:'var(--base-text-color)'}}>
                         <p style={{padding:'15px', backgroundColor:'var(--primary-color)', color:'white', borderRadius:'4px', width:'80%'}}>Department list</p>
@@ -167,9 +167,9 @@ export const DepartmentComponent = () => {
                         deleteDepartment={handleDeleteDepartment}
                     />
                 </div>
-            </Col>
+            </div>
             <ToastContainer />
-        </Row>
+        </div>
         </div>
     );
 };  

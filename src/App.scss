@@ -48,12 +48,14 @@
   --scroll-track-bg-color: #fff;
   --scroll-thumb-bg-color: #e9e9e9;
   --logo:url('./assets/images/darklogo.png');
-  --blue-color: #343ccf
+  --blue-color: #343ccf;
+  --div-smoke: var(--secondary-color);
+   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 @mixin darkMode {
   --primary-color: #50b64a;
-  --secondary-color: #2e2e48;
+  --secondary-color: #2e2e48;;
   --background-color: #383854;
   --side-link-hover-color: #525270;
   --side-text-color: #e1e1e1;
@@ -72,7 +74,10 @@
   --scroll-track-bg-color: #2e2e48;
   --scroll-thumb-bg-color: #575777;
   --logo:url('./assets/images/lightlogo.png');
-  --blue-color: #343ccf
+  --blue-color: #343ccf;
+  --table-bgc : #8383c6;
+  --div-smoke: #303046;
+  --box-shadow: none !important;
 }
 
 * {

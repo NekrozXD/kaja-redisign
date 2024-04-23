@@ -8,6 +8,9 @@ import SunIcon from "./assets/icons/sun.svg";
 import BaseLayout from "./layout/BaseLayout";
 import { Dashboard, PageNotFound } from "./screens";
 import { DepartementScreen } from "./screens/departement/departement";
+import { SocietyScreen } from "./screens/Society/SocietyScreen";
+import { UserScreen } from "./screens/user/UserScreen";
+import { WorkhourScreen } from "./screens/workhour/WorkhourScreen";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -15,7 +18,7 @@ function App() {
   // adding dark-mode class if the dark mode is set on to the body tag
   useEffect(() => {
     if (theme === DARK_THEME) {
-      document.body.classList.add("dark-mode");
+      document.body.classList.add("dark-mode"); 
     } else {
       document.body.classList.remove("dark-mode");
     }
@@ -29,6 +32,9 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<PageNotFound />} />
             <Route path="/department" element={<DepartementScreen />} />
+            <Route path="/society" element={<SocietyScreen />} />
+           <Route path="/user" element={<UserScreen />} />
+           <Route path='/workhour' element={<WorkhourScreen />} />
           </Route>
         </Routes>
 

@@ -9,32 +9,18 @@ const DepartmentTable = ({ departments, editDepartment, deleteDepartment }) => (
                 <th>Coded</th>
                 <th>Description</th>
                 <th>Society</th>
+                <th>Employees numbers</th>
                 <th>Society logo</th>
-                <th></th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {departments.length === 0 ? (
-                <tr>
-                    <td colSpan="6" className="text-center">
-                        <div className="dot-spinner">
-                            <div className="dot-spinner__dot"></div>
-                            <div className="dot-spinner__dot"></div>
-                            <div className="dot-spinner__dot"></div>
-                            <div className="dot-spinner__dot"></div>
-                            <div className="dot-spinner__dot"></div>
-                            <div className="dot-spinner__dot"></div>
-                            <div className="dot-spinner__dot"></div>
-                            <div className="dot-spinner__dot"></div>
-                        </div>
-                    </td>
-                </tr>
-            ) : (
-                departments.map((department) => (
+                {departments.map((department) => (
                     <tr key={department.id}>
                         <td>{department.coded}</td>
                         <td>{department.description}</td>
                         <td>{department.society?.company_name}</td>
+                        <td>150</td>
                         <td width={'100px'}><img width="50px" src={`http://localhost:8000/storage/society/logo/${department.society?.logo}`} alt="Society Logo" /></td>
                         <td width={'150px'}>
                             <button className="edit" onClick={() => editDepartment(department)}>
@@ -47,7 +33,7 @@ const DepartmentTable = ({ departments, editDepartment, deleteDepartment }) => (
                         </td>
                     </tr>
                 ))
-            )}
+            }
         </tbody>
     </table>
 );

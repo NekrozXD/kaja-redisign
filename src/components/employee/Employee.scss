@@ -1,0 +1,114 @@
+.employeeTable{
+    color: var(--base-text-color);
+    max-height: 100%;
+    overflow-y: auto;
+    td, th {
+        height: 50px;
+        border-bottom: 1px solid grey;
+    }
+     table {
+        border-collapse: collapse;
+        text-align: center;
+     }
+
+     button {
+        padding: 15px;
+        border-radius: 4px;
+     }
+
+     .delete {
+        background-color: red;
+        color : white
+     }
+
+     .edit {
+        background-color: var(--blue-color);
+        margin-right: 5px;
+        color: white;
+     }
+
+     th {
+        background: var(--thead-bg-color);
+     }
+
+     &::-webkit-scrollbar {
+      width: 0
+  }
+} 
+
+.employee{
+    background: var(--secondary-color);
+    padding: 15px;
+    max-height: 90vh;
+    min-height: 90vh;
+    overflow-y: auto;
+    header{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        gap:50px
+    }
+
+    header button {
+        background-color: var(--blue-color);
+        color:white;
+        padding: 15px;
+        border-radius: 4px;
+        margin-left: auto;
+    }
+    &::-webkit-scrollbar{
+      width: 0;
+    }
+   }
+.csv{
+   color:var(--base-text-color);
+
+   table{
+      color:var(--base-text-color);
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+   }
+
+   td,th {
+      border-bottom: 1px solid var(--base-text-color);
+      height: 50px;
+   }
+
+   header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap:50px
+   }
+}
+.pagination {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   margin-top: 20px;
+   gap: 5px;
+   color:var(--base-text-color)
+ 
+}
+
+.pagination li {
+   list-style: none;
+   margin-bottom: 5px;
+   color:var(--base-text-color)
+}
+
+.pagination li a {
+   padding: 5px 10px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   text-decoration: none;
+   color:var(--base-text-color)
+}
+
+.pagination li.active a {
+   background-color: var(--blue-color);
+   color: white;
+}

@@ -2,20 +2,13 @@
     import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import { updateSociety } from "./SocietyAction";
 
-    export const SocietyDialog = ({ open, handleClose, handleSave, society, isEditing,editSociety }) => {
+    export const SocietyDialog = ({ open, handleClose, handleSave, society, isEditing,editSociety,setIsEditing }) => {
         const [company_name, setCompany_name] = useState(society.company_name || "");
         const [address, setAddress] = useState(society.address || "");
         const [company_email, setCompany_email] = useState(society.company_email || "");
         const [nif, setNif] = useState(society.nif || "");
         const [stat, setStat] = useState(society.stat || "");
-        const [logo, setLogo] = useState(society.logo || null);
-        
-        useEffect(() => {
-            if (isEditing) {
-                editSociety(society);
-            }
-        }, [isEditing, society, editSociety]);
-    
+        const [logo, setLogo] = useState(society.logo || null);    
 
         const handleSaveClick = () => {
             const formData = new FormData();
@@ -64,7 +57,11 @@ import { updateSociety } from "./SocietyAction";
         const handleLogoChange = (e) => {
             setLogo(e.target.files[0]);
         };
-
+        
+        const handleCloseDialog = () => {
+            setIsEditing(false);
+            handleClose();
+        }
         return (
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{isEditing ? "Edit Society" : "Create Society"}</DialogTitle>
@@ -107,7 +104,7 @@ import { updateSociety } from "./SocietyAction";
                     <input type="file" onChange={handleLogoChange} />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleCloseDialog}>Cancel</Button>
                         <Button onClick={handleSaveClick} color="primary">
                             {isEditing ? "Save Changes" : "Create"}
                         </Button>

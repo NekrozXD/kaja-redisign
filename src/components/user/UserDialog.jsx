@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
 import axios from "axios";
 
-export const UserDialog = ({ open, onClose, userData, departments, employees, societies, onSubmit }) => {
+export const UserDialog = ({ open, onClose, userData, departments, employees, societies, onSubmit,onChange }) => {
   const [formData, setFormData] = useState(userData);
 
   useEffect(() => {
@@ -12,11 +12,7 @@ export const UserDialog = ({ open, onClose, userData, departments, employees, so
   }, [userData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+  onChange(e);
   };
 
   const handleSubmit = (e) => {

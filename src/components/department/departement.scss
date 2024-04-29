@@ -1,5 +1,10 @@
-.departement {
+.department {
     color: var(--base-text-color);
+    background-color: var(--secondary-color);
+    max-height: 90vh;
+    min-height: 90vh;
+    box-shadow: var(--light-shadow1);
+    padding: 15px;
     td, th {
         height: 50px;
         border-bottom: 1px solid grey;
@@ -24,4 +29,36 @@
         margin-right: 5px;
         color: white;
      }
+}
+
+.departmentTable {
+   color: var(--base-text-color);
+    td, th {
+        height: 50px;
+        border-bottom: 1px solid grey;
+    }
+     table {
+        border-collapse: collapse;
+        text-align: center;
+     }
+
+     th{
+      background-color: var(--thead-bg-color);
+     }
+     button {
+        padding: 15px;
+        border-radius: 4px;
+     }
+
+     .delete {
+        background-color: red;
+        color : white
+     }
+
+     .edit {
+        background-color: var(--blue-color);
+        margin-right: 5px;
+        color: white;
+     }
+
 }

@@ -21,17 +21,17 @@
                 const [logo, setLogo] = useState();
                 const [societies, setSocieties] = useState([]);
                 const [isEditing, setIsEditing] = useState(null);
-                const [isDialogOpen, setIsDialogOpen] = useState(false);
+                const [open, setOpen] = useState(false);
                 const [id, setId] = useState([]);
 
                 const handleOpenDialog = () => {
-                    setIsDialogOpen(true);
+                    setOpen(true);
                 };
 
                 const handleCloseDialog = () => {
-                    setIsDialogOpen(false);
+                    setOpen(false);
                 };
-                const handleUpdate = async (id) => {
+                const handleUpdate = async () => {
                     try {
                         const formData = {
                             company_name,
@@ -41,7 +41,8 @@
                             stat,
                             logo
                         };
-                        console.log("Form data to put:", formData);     
+                        console.log("Form data to put:", formData);   
+                        console.log('id: ',id)  
                         await updateSociety(id, formData);
                         toast.success("Society updated successfully");
                         handleCloseDialog();
@@ -120,8 +121,8 @@
                     setNif(society.nif || "");
                     setStat(society.stat || "");
                     setLogo(society.logo || "");
-                    setIsEditing(true);
-                    setIsDialogOpen(true);
+                    setIsEditing(society.id);
+                    setOpen(true);
                 };
                 
 
@@ -139,7 +140,7 @@
                     <div className= 'society' style={{backgroundColor:'var(--secondary-color)', padding:'15px', maxHeight:'90vh', minHeight:'90vh', width:'100%'}}>
                         <div>          
                             <SocietyDialog
-                                open={isDialogOpen}
+                                open={open}
                                 handleClose={handleCloseDialog}
                                 handleSave={handleSubmit}
                                 society={{
@@ -152,6 +153,7 @@
                                 }}
                                 isEditing={isEditing}
                                 editSociety={handleEdit}
+                                setIsEditing={setIsEditing}
                             />
                         </div>
                         <div>

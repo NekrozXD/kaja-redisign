@@ -146,6 +146,7 @@
         }
       }
     
+    
   }
   
   .workhourList{
@@ -190,5 +191,22 @@
         padding: 10px;
         border-radius: 4px;
         background-color: red;
+    }
+    @media screen and (max-width: 1400px) {
+      header {
+        gap:20px
+      }
+    }
+    @media screen and (max-width:800px) {
+      header {
+        gap:0
+      }
+
+      header span{
+        margin-left: 0;
+        margin-right: 0;
+        border-right: 1px solid var(--base-text-color);
+      }
+      
     }
   }

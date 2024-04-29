@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Row, Col,Card,Button } from "react-bootstrap"
+import { Col,Card,Button } from "react-bootstrap"
 import './society.scss'
 
 
@@ -21,20 +21,20 @@ return (
                 </tr>
                 </thead>
                 <tbody >
-                     {societies.map((row, key) => (
-                    <tr key={key}>
-                    <td>{row.company_name}</td>
-                    <td>{row.address}</td>
-                    <td>{row.company_email}</td>
-                    <td>{row.nif}</td>
-                    <td className="col-md-1">{row.stat}</td>
+                     {societies.map((society, id) => (
+                    <tr key={id}>
+                    <td>{society.company_name}</td>
+                    <td>{society.address}</td>
+                    <td>{society.company_email}</td>
+                    <td>{society.nif}</td>
+                    <td className="col-md-1">{society.stat}</td>
                     <td className="col-md-1">
-                 <img width="50px" src={`http://localhost:8000/storage/society/logo/${row.logo}`} alt="Society Logo" />
+                 <img width="50px" src={`http://localhost:8000/storage/society/logo/${society.logo}`} alt="Society Logo" />
                      </td>
                      <td>    
-                        <Button className="edit" variant="primary" onClick={() => editSociety(row)}><FontAwesomeIcon icon={faEdit}/></Button>
+                        <Button className="edit" variant="primary" onClick={() => editSociety(society)}><FontAwesomeIcon icon={faEdit}/></Button>
                         <span>&nbsp;</span>
-                        <Button className= "delete" variant="danger" onClick={() => deleteSociety(row.id)}>
+                        <Button className= "delete" variant="danger" onClick={() => deleteSociety(society.id)}>
                                 <FontAwesomeIcon icon={faTrash}/>
                         </Button>
                     </td>

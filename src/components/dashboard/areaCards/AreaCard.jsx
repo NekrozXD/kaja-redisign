@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 
 const AreaCard = ({ colors, percentFillValue, cardInfo, hoverContent, onClick }) => {
-  const filledValue = (percentFillValue / 100) * 360; // 360 degress for a full circle
+  const filledValue = (percentFillValue / 100) * 360; 
   const remainedValue = 360 - filledValue;
 
   const data = [

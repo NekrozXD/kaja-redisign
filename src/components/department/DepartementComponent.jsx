@@ -1,5 +1,5 @@
 // DepartmentComponent.js
-
+    
 import React, { useState, useEffect } from 'react';
 import { Container, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +17,7 @@ export const DepartmentComponent = () => {
     const [societies, setSocieties] = useState([]);
     const [departments, setDepartments] = useState([]);
     const [isEditing, setIsEditing] = useState(null);
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
     const [newDepartment, setNewDepartment] = useState({
         coded: "",
         description: "",
@@ -32,8 +32,6 @@ export const DepartmentComponent = () => {
     const editDepartment = (department) => {
         setIsEditing(department.id);
         setOpen(true);
-        fetchSocieties();
-        fetchDepartments();
         setEditedDepartment({
             coded: department.coded,
             description: department.description,
@@ -42,22 +40,23 @@ export const DepartmentComponent = () => {
     };
 
     useEffect(() => {
-        fetchDepartments().then((data) => setDepartments(data)).catch((error) => console.error('Failed to fetch departments:', error));
+        fetchDepartments()
+            .then((data) => setDepartments(data))
+            .catch((error) => console.error("Failed to fetch departments:", error));
     }, []);
 
     const fetchSocieties = async () => {
         try {
             const response = await axios.get("http://localhost:8000/api/societies");
-            setSocieties(response.data); 
+            setSocieties(response.data);
         } catch (error) {
             console.error("Error fetching societies:", error);
         }
     };
-    
+
     useEffect(() => {
         fetchSocieties();
     }, []);
-    
 
     const handleOpen = () => {
         setOpen(true);
@@ -82,29 +81,23 @@ export const DepartmentComponent = () => {
         try {
             const createdDepartment = await createDepartment(newDepartment);
             fetchSocieties();
-            console.log(societies)
             setDepartments([...departments, createdDepartment]);
             setNewDepartment({
                 coded: "",
                 description: "",
                 id_societies: "",
             });
-            
-            toast.success('Department created successfully');
+            toast.success("Department created successfully");
             handleClose();
         } catch (error) {
             console.error("Failed to create department:", error);
         }
     };
-    const [, forceUpdate] = React.useState();
 
     const handleUpdate = async () => {
-        console.log('updating department')
         try {
             await updateDepartment(isEditing, editedDepartment);
             fetchDepartments();
-            fetchSocieties();
-            console.log(societies)
             setDepartments(departments.map((department) => (department.id === isEditing ? editedDepartment : department)));
             setIsEditing(null);
             setEditedDepartment({
@@ -113,19 +106,14 @@ export const DepartmentComponent = () => {
                 id_societies: "",
             });
             window.location.reload();
-            toast.info('Department updated successfully');
-            
+            toast.info("Department updated successfully");
             handleClose();
-            forceUpdate(); // Add a forceUpdate call to force a re-render
         } catch (error) {
             console.error("Failed to update department:", error);
         }
     };
-    
-    
-    
+
     const handleDeleteDepartment = async (id) => {
-        console.log("Deleting department with ID:", id);
         try {
             await deleteDepartment(id);
             setDepartments(departments.filter((department) => department.id !== id));
@@ -134,9 +122,19 @@ export const DepartmentComponent = () => {
         }
     };
 
+    const deleteSelectedDepartments = async () => {
+        try {
+            await Promise.all(selectedDepartments.map(async (id) => {
+                await deleteDepartment(id);
+            }));
+            setDepartments(departments.filter((department) => !selectedDepartments.includes(department.id)));
+        } catch (error) {
+            console.error("Failed to delete departments:", error);
+        }
+    };
+
     return (
-        <div className='departement' style={{backgroundColor:'var(--secondary-color)', padding:'15px', maxHeight:'90vh', minHeight:'90vh', width:'100%'}}>
-        <div>
+        <div className="department">
             <div>
                 <Container>
                     <DepartmentDialog
@@ -154,10 +152,28 @@ export const DepartmentComponent = () => {
                 </Container>
             </div>
             <div className="bg-transparent">
-                <div className='department-table bg-transparent' style={{backgroundColor:'transparent',border:'none'}}>
-                    <header style={{backgroundColor:'var(--thead-bg-color)', padding: '10px', textAlign: 'center', color: 'white', fontWeight: 'bolder', display:'flex' , textAlign:'center', justifyContent:'center', alignItems:'center', color:'var(--base-text-color)'}}>
-                        <p style={{padding:'15px', backgroundColor:'var(--primary-color)', color:'white', borderRadius:'4px', width:'80%'}}>Department list</p>
-                        <Button variant="contained" color="primary" style={{justifyContent:'flex-end', alignItems:'flex-end', marginLeft:'auto', padding:'15px', backgroundColor:'var(--blue-color)', color:'white', borderRadius:'4px'}} onClick={handleOpen}>
+                <div className="department-table bg-transparent" style={{ backgroundColor: "transparent", border: "none" }}>
+                    <header
+                        style={{
+                            backgroundColor: "var(--thead-bg-color)",
+                            padding: "10px",
+                            textAlign: "center",
+                            color: "white",
+                            fontWeight: "bolder",
+                            display: "flex",
+                            textAlign: "center",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            color: "var(--base-text-color)",
+                        }}
+                    >
+                        <p style={{ padding: "15px", backgroundColor: "var(--primary-color)", color: "white", borderRadius: "4px", width: "80%" }}>Department list</p>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            style={{ justifyContent: "flex-end", alignItems: "flex-end", marginLeft: "auto", padding: "15px", backgroundColor: "var(--blue-color)", color: "white", borderRadius: "4px" }}
+                            onClick={handleOpen}
+                        >
                             Add Department
                         </Button>
                     </header>
@@ -165,11 +181,11 @@ export const DepartmentComponent = () => {
                         departments={departments}
                         editDepartment={editDepartment}
                         deleteDepartment={handleDeleteDepartment}
+                        deleteSelectedDepartments={deleteSelectedDepartments}
                     />
                 </div>
             </div>
             <ToastContainer />
         </div>
-        </div>
     );
-};  
+};

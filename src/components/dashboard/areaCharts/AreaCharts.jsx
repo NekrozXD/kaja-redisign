@@ -9,5 +9,5 @@ const AreaCharts = () => {
     </section>
   )
 }
-
+  
 export default AreaCharts

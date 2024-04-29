@@ -13,7 +13,8 @@ export const createSociety = async (formData) => {
 
 export const updateSociety = async (id, formData) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, formData);
+    console.log(formData);
+    const response = await axios.put(`${API_URL}/${id}`);
     console.log(response.data)
     return response.data;
   } catch (error) {

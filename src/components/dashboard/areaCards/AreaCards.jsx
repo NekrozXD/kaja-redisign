@@ -39,6 +39,60 @@ const AreaCards = () => {
   const absentPercentage = totalEmployees > 0 ? ((absentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
   const latePercentage = totalEmployees > 0 ? ((lateEmployees / totalEmployees) * 100).toFixed(2) : 0;
 
+  const showEmployee = () => {
+    const tableRows = absentEmployees.map(
+      (employee) => `
+        <tr>
+          <td>${employee.id_employe}</td>
+          <td>${employee.employee}</td>
+          <td>${employee.department}</td>
+        </tr>
+      `
+    ).join('');
+    
+    Swal.fire({
+      title: 'Absent Employees',
+      html: `
+        <table id="absentEmployeesTable">
+          <thead>
+            <tr>
+              <th>Employee ID</th>
+              <th>Name</th>
+              <th>Department</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>`,
+      icon: 'info',
+      showCloseButton: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      didOpen: () => {
+        const table = document.getElementById('absentEmployeesTable');
+        if (table) {
+          table.style.width = '100%';
+          table.style.textAlign = 'center';
+          table.style.borderCollapse = 'collapse';
+        }
+    
+        const thTdStyles = 'border: 1px solid grey; padding: 8px;';
+        const ths = table.querySelectorAll('th');
+        ths.forEach((th) => {
+          th.style.cssText = thTdStyles;
+        });
+    
+        const tds = table.querySelectorAll('td');
+        tds.forEach((td) => {
+          td.style.cssText = thTdStyles;
+        });
+      },
+    });
+    
+  }
+  
+  
   return (
     <section className="content-area-cards">
       <AreaCard
@@ -78,18 +132,7 @@ const AreaCards = () => {
     value: absentEmployees.length,
     text: "Absent employee",
   }}
-  hoverContent={'show'}
-  onClick={() => {
-    console.log('Absent Employees:', absentEmployees);
-    Swal.fire({
-      title: 'Absent Employees',
-      html: `<ul>${absentEmployees.map(employee => `<li>${employee.employee}</li>`).join('')}</ul>`,
-      icon: 'info',
-      showCloseButton: true,
-      showCancelButton: false,
-      focusConfirm: false,
-    });
-  }}
+  hoverContent={'show'}  onClick={showEmployee}
 />
 
       <AreaCard

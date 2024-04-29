@@ -11,11 +11,14 @@ import { DepartementScreen } from "./screens/departement/departement";
 import { SocietyScreen } from "./screens/Society/SocietyScreen";
 import { UserScreen } from "./screens/user/UserScreen";
 import { WorkhourScreen } from "./screens/workhour/WorkhourScreen";
+import {EmployeeScreen } from "./screens/employee/EmployeeScreen";
+import { MaterialScreen } from "./screens/material/MaterialScreen";
+import EmployeeFilter from "./components/employee/employeefilter";
+import { Login } from "./components/Login/Login";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
-  // adding dark-mode class if the dark mode is set on to the body tag
   useEffect(() => {
     if (theme === DARK_THEME) {
       document.body.classList.add("dark-mode"); 
@@ -29,12 +32,16 @@ function App() {
       <Router>
         <Routes>
           <Route element={<BaseLayout />}>
+            {/* <Route path="/" element={<Login/>} /> */}
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<PageNotFound />} />
             <Route path="/department" element={<DepartementScreen />} />
             <Route path="/society" element={<SocietyScreen />} />
            <Route path="/user" element={<UserScreen />} />
            <Route path='/workhour' element={<WorkhourScreen />} />
+           <Route path="/employees" element={<EmployeeScreen />} />
+           <Route path='/materials' element={<MaterialScreen />} />
+           <Route path='/employeeFilter' element={<EmployeeFilter />} />
           </Route>
         </Routes>
 

@@ -6,7 +6,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Swal from "sweetalert2";
 import './workhour.scss'
 
-const WorkhourMapping = ({t}) => {
+const WorkhourMapping = () => {
     const [data, setData] = useState({ workhours: [], workhourlines: [] });
 
     useEffect(() => {
@@ -86,14 +86,14 @@ const WorkhourMapping = ({t}) => {
             fetchData();
         }).catch(({ response: { data } }) => {
             Swal.fire({
-                text: "Failed to delete workhours",
+                text: data.message,
                 icon: "error"
             });
         });
     };
     return (
         <div className='workhourList'>
-            <h2>Workhour mapping</h2>
+            <h2>Workhour Lists</h2>
 
             {data.workhours.slice().reverse().map((workhour) => (
                 <div key={workhour.id}>

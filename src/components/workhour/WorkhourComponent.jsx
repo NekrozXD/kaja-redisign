@@ -7,7 +7,7 @@ import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './workhour.scss'
 
-const WorkhourForm = ({t}) => {
+const WorkhourForm = () => {
     const [workhourData, setWorkhourData] = useState({
         nom: '',
         total_hour:'1',
@@ -28,6 +28,12 @@ const WorkhourForm = ({t}) => {
         } else {
             setSelectedDays([...selectedDays, day]);
         }
+    
+        // Toggle visibility of workhour line inputs for the selected day
+        setShowWorkhourLineInputs((prevState) => ({
+            ...prevState,
+            [day]: !prevState[day]
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -136,6 +142,7 @@ const WorkhourForm = ({t}) => {
     
         return totalMinutes;
     };
+    
     return (
         <div className="workhour-form">
             <form onSubmit={handleSubmit}>
@@ -232,7 +239,7 @@ const WorkhourForm = ({t}) => {
                             ))}
                         </tbody>
                     </table>
-                    <button onClick={handleCreateWorkhourLines}>Create workhourlines</button>
+                    <button onClick={handleCreateWorkhourLines}>insert workhourlines</button>
                 </>
             )}
             {isLoading && (

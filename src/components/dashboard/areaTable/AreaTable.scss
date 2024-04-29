@@ -35,7 +35,7 @@
     }
 
     table {
-      min-width: 900px;
+      text-align: center;
       width: 100%;
       border-collapse: collapse;
       color: var(--text-color-inverted);
@@ -65,13 +65,13 @@
         text-align: center;
       }
 
-      .dt-status {
+      .dt-chec {
         display: flex;
         align-items: center;
         justify-content: flex-start;
         column-gap: 6px;
 
-        .dt-status-dot {
+        .dt-chec-dot {
           width: 8px;
           height: 8px;
           border-radius: 100%;
@@ -87,7 +87,7 @@
           }
         }
 
-        .dt-status-text {
+        .dt-chec-text {
           text-transform: capitalize;
         }
       }

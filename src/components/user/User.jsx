@@ -184,8 +184,8 @@ export const UserComponent = () => {
                           <td>{user.name}</td>
                           <td>{user.email}</td>
                           <td>{user.role}</td>
-                          <td>{user.id_societies}</td>
-                          <td>{user.id_departments}</td>
+                          <td>{user.society.company_name}</td>
+                          <td>{user.department.coded}</td>
                           <td>
                             <button className='edit' onClick={() => handleEdit(user.id)}>< FontAwesomeIcon icon={faEdit} color="white"/></button>
                             <button className='delete' onClick={() => handleDelete(user.id)}><FontAwesomeIcon icon={faTrash}color="white"/></button>
@@ -216,6 +216,7 @@ export const UserComponent = () => {
                 employees={employees}
                 societies={societies}
                 onSubmit={handleSubmit}
+                onChange={handleChange}
               />
             </div>          
       );

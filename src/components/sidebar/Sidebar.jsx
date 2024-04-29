@@ -102,7 +102,7 @@ const Sidebar = () => {
         </Link>
       </li>
       <li className="menu-item">
-      <Link to="/Materials" className={`menu-link ${activeLink === "/Materials" ? "active" : ""}`} onClick={() => handleMenuClick("/Materials")}>
+      <Link to="/materials" className={`menu-link ${activeLink === "/Materials" ? "active" : ""}`} onClick={() => handleMenuClick("/Materials")}>
           <span className="menu-link-icon">
             <MdStorage size={18} />
           </span>

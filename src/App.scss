@@ -51,6 +51,7 @@
   --blue-color: #343ccf;
   --div-smoke: var(--secondary-color);
    --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   --gradient: linear-gradient(to bottom, #dadde4,#f2f4ff,#bfc2c8);
 }
 
 @mixin darkMode {
@@ -78,6 +79,7 @@
   --table-bgc : #8383c6;
   --div-smoke: #303046;
   --box-shadow: none !important;
+  --gradient: linear-gradient(to bottom, #2e2e48,#575777,#383854);
 }
 
 * {

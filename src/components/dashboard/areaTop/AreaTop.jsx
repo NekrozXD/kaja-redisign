@@ -9,7 +9,7 @@ import { DateRange } from 'react-date-range';
 import './AreaTop.scss';
 import AreaCards from '../areaCards/AreaCards';
 
-const AreaTop = () => {
+const AreaTop = ({ onDepartmentSelect }) => {
   const { openSidebar } = useContext(SidebarContext);
   const [state, setState] = useState([
     {
@@ -34,9 +34,11 @@ const AreaTop = () => {
     }
   };
 
-  const handleDepartmentChange = (event) => {
-    setSelectedDepartment(event.target.value);
+  const handleDepartmentChange = (e) => {
+    setSelectedDepartment(e.target.value);
+    onDepartmentSelect(e.target.value); 
   };
+  
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -87,7 +89,6 @@ const AreaTop = () => {
           />
         </div>
       </div>
-      <AreaCards selectedDepartment={selectedDepartment} />
     </section>
   );
 };

@@ -7,6 +7,7 @@ import 'react-date-range/dist/theme/default.css';
 import { addDays } from 'date-fns';
 import { DateRange } from 'react-date-range';
 import './AreaTop.scss';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import AreaCards from '../areaCards/AreaCards';
 
 const AreaTop = ({ onDepartmentSelect }) => {
@@ -65,15 +66,28 @@ const AreaTop = ({ onDepartmentSelect }) => {
         </button>
         <h2 className="area-top-title">Dashboard</h2>
       </div>
-      <div>
-        <label>Department: </label>
-      <select value={selectedDepartment} onChange={handleDepartmentChange}>
-          <option value="">Select Department</option>
-          {departments.map(department => (
-            <option key={department.id} value={department.id}>{department.coded}</option>
-          ))}
-        </select>
-      </div>    
+      <div className="area-top-m">
+        <div className="area-top-label">
+          <label id="department-label">Department:</label>
+        </div>
+        <FormControl>
+          <Select
+            labelId="department-label"
+            id="departmentSelect"
+            value={selectedDepartment}
+            onChange={handleDepartmentChange}
+          >
+            <MenuItem value="">
+              <em>Select Department</em>
+            </MenuItem>
+            {departments.map((department) => (
+              <MenuItem key={department.id} value={department.id}>
+                {department.coded}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>  
       <div className="area-top-r">
         <div
           ref={dateRangeRef}

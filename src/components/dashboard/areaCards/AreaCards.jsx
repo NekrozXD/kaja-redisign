@@ -5,42 +5,30 @@ import "./AreaCards.scss";
 import Swal from 'sweetalert2';
 import { useRef } from 'react';
 
-const AreaCards = () => {
+const AreaCards = ({ selectedDepartment }) => {
+  const [employees, setEmployees] = useState([]);
   const [attendanceData, setAttendanceData] = useState(null);
-  const [showPresentList, setShowPresentList] = useState(false);
+
+  const filterEmployees = (departmentId) => {
+    axios.post('http://localhost:8000/api/filter_department', {
+      department: departmentId,
+    })
+    .then(response => {
+      setEmployees(response.data.attendance);
+    })
+    .catch(error => {
+      console.error('Error filtering employees:', error);
+    });
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/liste');
-        setAttendanceData(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+    if (selectedDepartment) {
+      filterEmployees(selectedDepartment);
+    }
+  }, [selectedDepartment]);
 
-    fetchData();
-    const intervalId = setInterval(fetchData, 5000);
- 
-    return () => clearInterval(intervalId);
-  }, []);
-
-  if (!attendanceData) {
-    return <div>Loading...</div>;
-  }
-
-  const totalEmployees = parseInt(attendanceData.employee_total);
-  const presentEmployees = attendanceData.attendance.filter(employee => employee.presence);
-  const absentEmployees = attendanceData.attendance.filter(employee => !employee.presence);
-  const lateEmployees = parseInt(attendanceData.employee_retard);
-
-  const presentPercentage = totalEmployees > 0 ? ((presentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
-  const absentPercentage = totalEmployees > 0 ? ((absentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
-  const latePercentage = totalEmployees > 0 ? ((lateEmployees / totalEmployees) * 100).toFixed(2) : 0;
-
-  const showEmployee = () => {
-    const tableRows = absentEmployees.map(
+  const showEmployee = (employees) => {
+    const tableRows = employees.map(
       (employee) => `
         <tr>
           <td>${employee.id_employe}</td>
@@ -51,9 +39,9 @@ const AreaCards = () => {
     ).join('');
     
     Swal.fire({
-      title: 'Absent Employees',
+      title: 'Employees',
       html: `
-        <table id="absentEmployeesTable">
+        <table id="employeesTable">
           <thead>
             <tr>
               <th>Employee ID</th>
@@ -70,7 +58,7 @@ const AreaCards = () => {
       showCancelButton: false,
       focusConfirm: false,
       didOpen: () => {
-        const table = document.getElementById('absentEmployeesTable');
+        const table = document.getElementById('employeesTable');
         if (table) {
           table.style.width = '100%';
           table.style.textAlign = 'center';
@@ -91,8 +79,20 @@ const AreaCards = () => {
     });
     
   }
-  
-  
+
+  if (!employees) {
+    return <div>Loading...</div>;
+  }
+
+  const totalEmployees = employees.length;
+  const presentEmployees = employees.filter(employee => employee.presence);
+  const absentEmployees = employees.filter(employee => !employee.presence);
+  const lateEmployees = employees.filter(employee => employee.late).length;
+
+  const presentPercentage = totalEmployees > 0 ? ((presentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
+  const absentPercentage = totalEmployees > 0 ? ((absentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
+  const latePercentage = totalEmployees > 0 ? ((lateEmployees / totalEmployees) * 100).toFixed(2) : 0;
+
   return (
     <section className="content-area-cards">
       <AreaCard
@@ -112,29 +112,19 @@ const AreaCards = () => {
           text: "Present employee",
         }}
         hoverContent={'show'}
-        onClick={() => {
-       
-          Swal.fire({
-            title: 'Present Employees',
-            html: `<ul>${presentEmployees.map(employee => `<li>${employee.employee}</li>`).join('')}</ul>`,
-            icon: 'info',
-            showCloseButton: true,
-            showCancelButton: false,
-            focusConfirm: false,
-          });
-        }}
+        onClick={() => showEmployee(presentEmployees)}
       />
       <AreaCard
-  colors={["#e4e8ef", "#4ce13f"]}
-  percentFillValue={absentPercentage}
-  cardInfo={{
-    title: "Absent",
-    value: absentEmployees.length,
-    text: "Absent employee",
-  }}
-  hoverContent={'show'}  onClick={showEmployee}
-/>
-
+        colors={["#e4e8ef", "#4ce13f"]}
+        percentFillValue={absentPercentage}
+        cardInfo={{
+          title: "Absent",
+          value: absentEmployees.length,
+          text: "Absent employee",
+        }}
+        hoverContent={'show'}
+        onClick={() => showEmployee(absentEmployees)}
+      />
       <AreaCard
         colors={["#e4e8ef", "#f29a2e"]}
         percentFillValue={latePercentage}

@@ -4,7 +4,7 @@ const Dashboard = () => {
   return (
     <div className="content-area">
       <AreaTop />  
-      <AreaCards />
+      {/* <AreaCards /> */}
       {/* <AreaCharts /> */}
       <AreaTable />
     </div>

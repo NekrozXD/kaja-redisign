@@ -14,7 +14,8 @@ import { WorkhourScreen } from "./screens/workhour/WorkhourScreen";
 import {EmployeeScreen } from "./screens/employee/EmployeeScreen";
 import { MaterialScreen } from "./screens/material/MaterialScreen";
 import EmployeeFilter from "./components/employee/employeefilter";
-import { Login } from "./components/Login/Login";
+import Login from "./components/Login/Login";
+import EmployeeDetails from "./components/employee/employeeDetail";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -33,7 +34,7 @@ function App() {
         <Routes>
           <Route element={<BaseLayout />}>
             {/* <Route path="/" element={<Login/>} /> */}
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<PageNotFound />} />
             <Route path="/department" element={<DepartementScreen />} />
             <Route path="/society" element={<SocietyScreen />} />
@@ -42,7 +43,9 @@ function App() {
            <Route path="/employees" element={<EmployeeScreen />} />
            <Route path='/materials' element={<MaterialScreen />} />
            <Route path='/employeeFilter' element={<EmployeeFilter />} />
+           <Route path="/employee-details" element={<EmployeeDetails />} />
           </Route>
+          <Route path="/" element={<Login />} />
         </Routes>
 
         <button

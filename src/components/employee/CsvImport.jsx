@@ -3,7 +3,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import axios from 'axios';
 import './Employee.scss';
 
-const CsvImport = ({ employees, updateEmployeeAction, fetchData, toast, departments, societies, workhours, onImportComplete }) => {
+export const CsvImport = ({ employees, updateEmployeeAction, fetchData, toast, departments, societies, workhours, onImportComplete }) => {
     const [parsedData, setParsedData] = useState([]);
 
     const handleFileUpload = async (event) => {
@@ -111,7 +111,7 @@ const CsvImport = ({ employees, updateEmployeeAction, fetchData, toast, departme
                                         setParsedData(newData);
                                     }}
                                 >
-                                    {workhours.map(workhour => (
+                                    {workhours && workhours.workhours && workhours.workhours.map(workhour => (
                                         <option key={workhour.id} value={workhour.id}>
                                             {workhour.nom}
                                         </option>
@@ -127,4 +127,3 @@ const CsvImport = ({ employees, updateEmployeeAction, fetchData, toast, departme
     
 };
 
-export default CsvImport;

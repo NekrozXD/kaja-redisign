@@ -1,16 +1,12 @@
             import { useState, useEffect } from "react";
-            import { Card, Button } from "react-bootstrap";
-            import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-            import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+            import {  Button } from "react-bootstrap";
             import { toast, ToastContainer } from "react-toastify";
             import "react-toastify/dist/ReactToastify.css";
             import { SocietyTable } from "./SocietyTable";
             import Swal from "sweetalert2";
-            import axios from 'axios';
-            import { createSociety, updateSociety, fetchSocieties, deleteSociety } from "./SocietyAction.js";
+            import { fetchSocieties, deleteSociety } from "./SocietyAction.js";
             import { SocietyDialog } from "./SocietyMaterialDialog";
-            import './society.scss'
-
+            import './society.scss';
             export const SocietyComponent = () => {
 
                 const [company_name, setCompany_name] = useState("");
@@ -30,52 +26,8 @@
 
                 const handleCloseDialog = () => {
                     setOpen(false);
+                    fetchAllSocieties();
                 };
-                const handleUpdate = async () => {
-                    try {
-                        const formData = {
-                            company_name,
-                            address,
-                            company_email,
-                            nif,
-                            stat,
-                            logo
-                        };
-                        console.log("Form data to put:", formData);   
-                        console.log('id: ',id)  
-                        await updateSociety(id, formData);
-                        toast.success("Society updated successfully");
-                        handleCloseDialog();
-                        fetchAllSocieties();
-                        clearForm();
-                    } catch (error) {
-                        console.error("Failed to update society: ", error);
-                        toast.error("Failed to update society");
-                    }
-                };
-                
-                const handleCreate = async () => {
-                    try {
-                        const formData = {
-                            company_name,
-                            address,
-                            company_email,
-                            nif,
-                            stat,
-                            logo
-                        };
-                        await createSociety(formData);
-                        toast.success("Society created successfully");
-                        handleCloseDialog();
-                        fetchAllSocieties();
-                        clearForm();
-                    } catch (error) {
-                        console.error("Failed to create society: ", error);
-                        toast.error("Failed to create society");
-                    }
-                };
-                
-                const handleSubmit = isEditing ? handleUpdate : handleCreate;
                 
                 
                 useEffect(() => {
@@ -121,19 +73,9 @@
                     setNif(society.nif || "");
                     setStat(society.stat || "");
                     setLogo(society.logo || "");
-                    setIsEditing(society.id);
+                    setIsEditing(true);
+                    setId(society.id);
                     setOpen(true);
-                };
-                
-
-                const clearForm = () => {
-                    setCompany_name("");
-                    setAddress("");
-                    setCompany_email("");
-                    setNif("");
-                    setStat("");
-                    setLogo(null);
-                    setIsEditing(null);
                 };
 
                 return (
@@ -142,7 +84,6 @@
                             <SocietyDialog
                                 open={open}
                                 handleClose={handleCloseDialog}
-                                handleSave={handleSubmit}
                                 society={{
                                     company_name,
                                     address,
@@ -154,6 +95,7 @@
                                 isEditing={isEditing}
                                 editSociety={handleEdit}
                                 setIsEditing={setIsEditing}
+                                id={id}
                             />
                         </div>
                         <div>

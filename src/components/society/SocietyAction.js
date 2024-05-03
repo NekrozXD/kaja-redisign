@@ -4,6 +4,7 @@ const API_URL = 'http://localhost:8000/api/societies';
 
 export const createSociety = async (formData) => {
   try {
+    console.log('form data from action.jsx', formData);
     const response = await axios.post(API_URL, formData);
     return response.data;
   } catch (error) {

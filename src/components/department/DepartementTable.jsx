@@ -1,12 +1,15 @@
     import React from 'react';
     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
     import { useState } from 'react';
-    import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+    import { faEdit, faTrash,faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
     import './departement.scss'
+    import ReactPaginate from 'react-paginate';
 
     const DepartmentTable = ({ departments, editDepartment, deleteDepartment }) => {
 
         const [selectedDepartments, setSelectedDepartments] = useState([]);
+        const [currentPage, setCurrentPage] = useState(0);
+        const itemsPerPage = 12;
 
         const toggleDepartmentSelection = (id) => {
             setSelectedDepartments((prevSelectedDepartments) => {
@@ -25,6 +28,13 @@
             setSelectedDepartments([]);
         };
 
+        const pageCount = Math.ceil(departments.length / itemsPerPage);
+        const offset = currentPage * itemsPerPage;    
+        
+        const handlePageClick = ({ selected }) => {
+            setCurrentPage(selected);
+        };
+
         return (
             <div className="departmentTable">
                 {selectedDepartments.length > 0 && (
@@ -32,7 +42,7 @@
                         Delete selected
                     </button>
                 )}
-                <table className="table" style={{ width: "100%" }}>
+                <table className="table" style={{ width: "100%", height:'100%' }}>
                     <thead>
                         <tr>
                             <th></th>
@@ -45,7 +55,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {departments.map((department) => (
+                        {departments.slice(offset, offset + itemsPerPage).map((department) => (
                             <tr key={department.id}>
                                 <td>
                                     <input
@@ -77,7 +87,18 @@
                         ))}
                     </tbody>
                 </table>
-            
+                <div style={{width:'100%', display:'flex', alignContent:'center', justifyContent:'center',padding:'5px',marginTop:'auto'}}>
+            <ReactPaginate
+                previousLabel={<FontAwesomeIcon icon={faArrowLeft}/>}
+                nextLabel={<FontAwesomeIcon icon={faArrowRight}/>}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={12}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+            />
+            </div>
             </div>
         );
     };

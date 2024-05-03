@@ -21,3 +21,126 @@
     border-bottom-right-radius: .3rem;
     }
     }
+
+    .login-page {
+        .login-section {
+            height: 100vh;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .login-container {
+            width: 100%;
+            max-width: 600px;
+        }
+    
+        .login-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .login-col {
+            flex: 1;
+        }
+    
+        .login-card {
+            border-radius: 0.5rem;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .login-card-body {
+            padding: 1.5rem;
+        }
+    
+        .login-logo {
+            /* Your logo styles */
+        }
+    
+        .login-form-outline {
+            margin-bottom: 1rem;
+            position: relative;
+    
+            input {
+                width: 100%;
+                padding: 0.5rem;
+                border: 1px solid #ccc;
+                border-radius: 0.25rem;
+                outline: none;
+    
+                &:focus + label {
+                    top: -0.75rem;
+                    font-size: 0.75rem;
+                    color: #333;
+                }
+            }
+    
+            label {
+                position: absolute;
+                top: 0.5rem;
+                left: 0.5rem;
+                transition: top 0.3s, font-size 0.3s, color 0.3s;
+                color: #999;
+                font-size: 1rem;
+            }
+        }
+    
+        .login-text-center {
+            text-align: center;
+            margin-top: 1rem;
+        }
+    
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+    
+            &:hover {
+                background-color: #218838;
+            }
+        }
+    
+        .login-text-muted {
+            color: #999;
+            font-size: 0.875rem;
+    
+            &:hover {
+                color: #666;
+            }
+        }
+    
+        .login-col-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--primary-color);
+            color: #fff;
+        }
+    
+        .login-img {
+            text-align: center;
+            padding: 1.5rem;
+        }
+    
+        .login-img-logo {
+            width: 70%;
+            max-width: 300px;
+        }
+
+        .logo{
+            background-image: var(--logo);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 50% 50%;
+            height: 50px;
+            width: 100px;
+        }
+    }
+    

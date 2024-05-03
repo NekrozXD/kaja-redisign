@@ -75,6 +75,8 @@ export const DepartmentComponent = () => {
             description: "",
             id_societies: "",
         });
+        fetchDepartments();
+        fetchSocieties();
     };
 
     const handleCreate = async () => {
@@ -105,7 +107,6 @@ export const DepartmentComponent = () => {
                 description: "",
                 id_societies: "",
             });
-            window.location.reload();
             toast.info("Department updated successfully");
             handleClose();
         } catch (error) {

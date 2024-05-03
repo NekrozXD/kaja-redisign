@@ -5,6 +5,7 @@ import './society.scss'
 
 
 export const SocietyTable = ( {societies, editSociety, deleteSociety} ) => {
+
 return (
     <div >
         <div style={{width:'100%'}} className="society-table">

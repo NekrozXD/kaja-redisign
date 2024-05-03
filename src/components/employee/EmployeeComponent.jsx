@@ -7,18 +7,120 @@
     import { fetchEmployees, fetchSocieties, fetchDepartments, fetchWorkhours } from './api.js';
     import { createEmployeeAction, updateEmployeeAction, deleteEmployeeAction } from './EmployeeAction.js';
     import EmployeeTable from './EmployeeTable';
-    import CsvImport from './CsvImport.jsx';
-
+    import {CsvImport} from './CsvImport.jsx';
+    import {WorkhourLinesModal} from './WorkhourLinesModal';
+    import {showDeleteConfirmation, deleteSelectedEmployees} from './SwalMessage.js'
     import './Employee.scss';
+    import styled from 'styled-components';
 
+    
+
+        const StyledSelect = styled.select`
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 200px; 
+        `;
+
+        const StyledOption = styled.option`
+        font-size: 16px;
+        font-family: 'Roboto', sans-serif; 
+        font-weight: bold;
+    `;
+
+    const MoreOptionsModal = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
     export const EmployeeComponent = () => {
-        const [societies, setSocieties] = useState([]);
+        const [societies, setSocieties] = useState([]); 
         const [departments, setDepartments] = useState([]);
         const [workhours, setWorkhours] = useState([]);
+        console.log(workhours)
         const [employees, setEmployees] = useState([]);
         const [isEditing, setIsEditing] = useState(null);   
         const [open, setOpen] = useState(false);
         const [image, setImage] = useState();
+        const [showWorkhourModal, setShowWorkhourModal] = useState(false);
+        const [selectedDepartmentId, setSelectedDepartmentId] = useState('');
+
+        const filterByDepartment = async (departmentId) => {
+            try {
+                let response;
+                if (departmentId === '') {
+                    response = await axios.get('http://localhost:8000/api/employees');
+                } else {
+                    response = await axios.post('http://localhost:8000/api/employees/filterByDepartment', { departmentId });
+                }
+                setEmployees(response.data.employees);
+            } catch (error) {
+                console.error('Failed to filter employees by department:', error);
+            }
+        };
+
+        const [selectedFilters, setSelectedFilters] = useState({
+            department: '',
+            workhour: '',
+            society: ''
+          });
+
+          const filterEmployees = async () => {
+            try {
+                let response;
+                const { department, workhour, society } = selectedFilters;
+                if (department && !workhour && !society) {
+                    response = await axios.post('http://localhost:8000/api/employees/filterByDepartment', { departmentId: department });
+                } else if (workhour && !department && !society) {
+                    response = await axios.post('http://localhost:8000/api/employees/filterByWorkhour', { workhourId: workhour });
+                } else if (society && !department && !workhour) {
+                    response = await axios.post('http://localhost:8000/api/employees/filterBySociety', { societyId: society });
+                } else if (department && workhour && !society) {
+                    response = await axios.post('http://localhost:8000/api/employees/filterByDepartmentWorkhour', { departmentId: department, workhourId: workhour });
+                } else if (department && society && !workhour) {
+                    response = await axios.post('http://localhost:8000/api/employees/filterByDepartmentSociety', { departmentId: department, societyId: society });
+                } else if (workhour && society && !department) {
+                    response = await axios.post('http://localhost:8000/api/employees/filterByWorkhourSociety', { workhourId: workhour, societyId: society });
+                } else if (department && workhour && society) {
+                    response = await axios.post('http://localhost:8000/api/employees/filterByWorkhourSocietyDepartment', { departmentId: department, workhourId: workhour, societyId: society });
+                } else {
+                    response = await axios.get('http://localhost:8000/api/employees');
+                }
+                setEmployees(response.data.employees);
+            } catch (error) {
+                console.error('Failed to filter employees:', error);
+            }
+        };
+        
+
+    const [selectedWorkhour, setSelectedWorkhour] = useState(null);
+
+    const handleClickWorkhour = async (workhourId, workhourName, totalHours, employeeName, employeeFirstName) => {
+        try {
+            const response = await axios.get(`http://localhost:8000/api/workhourlines/${workhourId}`);
+            setSelectedWorkhour({
+                workhourlines: response.data.workhourlines,
+                workhourName,
+                totalHours,
+                employeeName,
+                employeeFirstName
+            });
+            setShowWorkhourModal(true);
+        } catch (error) {
+            console.error('Error fetching workhour lines:', error);
+        }
+    };
+
+    const handleCloseWorkhourModal = () => {
+        setShowWorkhourModal(false);
+        setSelectedWorkhour(null);
+    };
         const [newEmployee, setNewEmployee] = useState({
             name: '',
             firstname: '',
@@ -43,12 +145,13 @@
             const employees = await fetchEmployees();
             const societies = await fetchSocieties();
             const departments = await fetchDepartments();
-            const workhours = await fetchWorkhours();
-    
+            const workhoursData = await fetchWorkhours();
+
             setEmployees(employees);
             setSocieties(societies);
             setDepartments(departments);
-            setWorkhours(workhours);
+            setWorkhours(workhoursData);
+            console.log('workhours: ', workhours);
         };
     
         useEffect(() => {
@@ -115,18 +218,7 @@
         };
 
         const deleteSelectedEmployees = async () => {
-        
-            console.log('deleteSelectedEmployees: ', selectedEmployees)
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This action is irreversible!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete them!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true,
-            }).then(async (result) => {
+            showDeleteConfirmation().then(async (result) => {
                 if (result.isConfirmed) {
                     try {
                         await Promise.all(selectedEmployees.map((id) => deleteEmployeeAction(id)));
@@ -142,6 +234,7 @@
                 }
             });
         };
+        
         const editEmployee = (employee) => {
             setIsEditing(employee.id);
             setOpen(true)
@@ -155,71 +248,6 @@
                 image:employee.image
             });
         };
-
-        
-        const handleClickWorkhour = async (workhourId, workhourName, totalHours, employeeName, employeeFirstName) => {
-            try {
-                const response = await axios.get(`http://localhost:8000/api/workhourlines/${workhourId}`);
-                showWorkhourLinesModal(response.data.workhourlines, workhourName, totalHours, employeeName, employeeFirstName);
-            } catch (error) {
-                console.error('Error fetching workhour lines:', error);
-            }
-        };
-
-        const showWorkhourLinesModal = (workhourlines, workhourName, totalHours, employeeName, employeeFirstName) => {
-            const tableRows = workhourlines
-                .map(
-                    (line) => `
-                    <tr>
-                        <td>${line.jour}</td>
-                        <td>${line.checkin_am}</td>
-                        <td>${line.checkout_am}</td>
-                        <td>${line.checkin_pm}</td>
-                        <td>${line.checkout_pm}</td>
-                    </tr>
-                `
-                )
-                .join('');
-
-            Swal.fire({
-                title: `Workhour Lines - ${workhourName} (${employeeName} ${employeeFirstName})`,
-                html: `
-                    <p>Total Hours: ${totalHours} hours</p>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Check-in AM</th>
-                                <th>Check-out AM</th>
-                                <th>Check-in PM</th>
-                                <th>Check-out PM</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tableRows}
-                        </tbody>
-                    </table>
-                `,
-                confirmButtonText: 'OK',
-                customClass: {
-                    container: 'custom-swal-container',
-                    popup: 'custom-swal-popup',
-                    header: 'custom-swal-header',
-                    title: 'custom-swal-title',
-                    content: 'custom-swal-content',
-                    closeButton: 'custom-swal-close-button',
-                    icon: 'custom-swal-icon',
-                    image: 'custom-swal-image',
-                    input: 'custom-swal-input',
-                    actions: 'custom-swal-actions',
-                    confirmButton: 'custom-swal-confirm-button',
-                    cancelButton: 'custom-swal-cancel-button',
-                    footer: 'custom-swal-footer',
-                },
-                showConfirmButton: true,
-            });
-        };
-
         const [showCsvImport, setShowCsvImport] = useState(false);
 
         const toggleCsvImport = () => {
@@ -247,19 +275,58 @@
                     <div>
                         <header style={{background:'var(--thead-bg-color)',padding: '10px', textAlign: 'center', color: 'white', fontWeight: 'bolder', display:'flex' , textAlign:'center', justifyContent:'center', alignItems:'center', color:'var(--base-text-color)'}}>
                     <p style={{  padding:'15px', backgroundColor:'var(--primary-color)',color:'white', borderRadius:'4px', width:'80%'}} >Employee list</p> 
+                 <div>
+                    <label htmlFor="department">Select a department:</label>
+                    <select id="department" onChange={(e) => {
+                        console.log("Selected department ID:", e.target.value);
+                        setSelectedFilters({...selectedFilters, department: e.target.value});
+                    }}>
+                        <option value="">All Departments</option>
+                        {departments.map((department) => (
+                            <option key={department.id} value={department.id}>{department.coded}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="workhour">Select a workhour:</label>
+                    <select id="workhour" onChange={(e) => {
+                        console.log("Selected workhour ID:", e.target.value);
+                        setSelectedFilters({...selectedFilters, workhour_id: e.target.value});
+                    }}>
+                        <option value="">All Workhours</option>
+                        {workhours && workhours.workhours && workhours.workhours.map((workhour) => (
+                            <option key={workhour.id} value={workhour.id}>{workhour.nom}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="society">Select a society:</label>
+                    <select id="society" onChange={(e) => {
+                        console.log("Selected society ID:", e.target.value);
+                        setSelectedFilters({...selectedFilters, society_id: e.target.value});
+
+                    }}>
+                        <option value="">All Societies</option>
+                        {societies.map((society) => (
+                            <option key={society.id} value={society.id}>{society.company_name}</option>
+                        ))}
+                    </select>
+                </div>
+                <button onClick={filterEmployees}>Filter Employees</button>
+
                         <button onClick={toggleCsvImport}>Import CSV</button>
                         <button onClick={handleOpen}>Add Employee</button>
                     </header>
-                        <EmployeeTable
-                            employees={employees}
-                            selectedEmployees={selectedEmployees}
-                            handleClickWorkhour={handleClickWorkhour}
-                            editEmployee={editEmployee}
-                            deleteEmployee={deleteEmployee}
-                            open={handleOpen}
-                            deleteSelectedEmployees={deleteSelectedEmployees}
-                            toggleEmployeeSelection={toggleEmployeeSelection}
-                        />
+                    <EmployeeTable
+                        employees={employees}
+                        selectedEmployees={selectedEmployees}
+                        handleClickWorkhour={handleClickWorkhour}
+                        editEmployee={editEmployee}
+                        deleteEmployee={deleteEmployee}
+                        filterByDepartment={filterByDepartment}
+                        departments={departments}
+                        selectedDepartmentId={selectedDepartmentId}
+                    />
                     </div>
                 )}
                     <div md={5}>
@@ -276,6 +343,7 @@
                     updateEmployee={updateEmployee}
                     departments={departments}
                     societies={societies}
+                    employees={employees}
                     workhours={workhours}
                 />
                     </div>
@@ -283,7 +351,11 @@
                  
                    
                 </div>
-                
+                <WorkhourLinesModal
+                show={showWorkhourModal}
+                handleClose={handleCloseWorkhourModal}
+                {...selectedWorkhour}
+            />
                     <ToastContainer />
                 </div>
         );

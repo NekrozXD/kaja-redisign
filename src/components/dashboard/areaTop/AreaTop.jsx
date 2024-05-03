@@ -70,16 +70,22 @@ const AreaTop = ({ onDepartmentSelect }) => {
         <div className="area-top-label">
           <label id="department-label">Department:</label>
         </div>
+        <span>&nbsp;</span>
         <FormControl>
           <Select
             labelId="department-label"
             id="departmentSelect"
             value={selectedDepartment}
             onChange={handleDepartmentChange}
+            fullWidth
+            style={{ width: '200px' }} 
           >
             <MenuItem value="">
               <em>Select Department</em>
             </MenuItem>
+            <MenuItem value='all'>
+              <em>all</em>
+              </MenuItem>
             {departments.map((department) => (
               <MenuItem key={department.id} value={department.id}>
                 {department.coded}

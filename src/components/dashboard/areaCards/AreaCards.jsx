@@ -8,18 +8,33 @@ import { useRef } from 'react';
 const AreaCards = ({ selectedDepartment }) => {
   const [employees, setEmployees] = useState([]);
   const [attendanceData, setAttendanceData] = useState(null);
-
   const filterEmployees = (departmentId) => {
-    axios.post('http://localhost:8000/api/filter_department', {
-      department: departmentId,
+    let apiUrl = 'http://localhost:8000/api/liste';
+  
+    if (departmentId && departmentId !== 'all') {
+      apiUrl = 'http://localhost:8000/api/filter_department';
+    }
+  
+    let requestData = {};
+    if (departmentId && departmentId !== 'all') {
+      requestData = { department: departmentId };
+    }
+  
+    axios({
+      method: departmentId && departmentId !== 'all' ? 'POST' : 'GET',
+      url: apiUrl,
+      data: requestData,
+      params: departmentId && departmentId !== 'all' ? null : { department: departmentId }
     })
     .then(response => {
       setEmployees(response.data.attendance);
+      console.log(employees);
     })
     .catch(error => {
       console.error('Error filtering employees:', error);
     });
   };
+  
 
   useEffect(() => {
     if (selectedDepartment) {
@@ -43,7 +58,7 @@ const AreaCards = ({ selectedDepartment }) => {
       html: `
         <table id="employeesTable">
           <thead>
-            <tr>
+            <tr>  
               <th>Employee ID</th>
               <th>Name</th>
               <th>Department</th>

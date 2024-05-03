@@ -5,15 +5,7 @@ export const fetchEmployees = async () => {
         const response = await axios.get('http://localhost:8000/api/employees');
         return response.data.employees;
     } catch (error) {
-        if (error.response.status === 429) {
-            console.error('Failed to fetch employees:', error);
-
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-            return fetchEmployees();
-        } else {
-            console.error('Failed to fetch employees:', error);
-            throw error;
-        }
+       console.error(error);
     }
 };
 

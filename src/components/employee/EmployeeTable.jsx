@@ -5,10 +5,11 @@ import { faArrowLeft, faEdit, faTrash,faArrowRight } from '@fortawesome/free-sol
 import './Employee.scss';
 import ReactPaginate from 'react-paginate';
 
-const EmployeeTable = ({ employees, handleClickWorkhour, editEmployee, deleteEmployee }) => {
+const EmployeeTable = ({ employees, handleClickWorkhour, editEmployee, deleteEmployee,department }) => {
     const [selectedEmployees, setSelectedEmployees] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 12;
+    console.log(employees)
 
     const deleteSelectedEmployees = () => {
         if (selectedEmployees.length === 0) return;

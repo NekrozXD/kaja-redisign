@@ -5,6 +5,7 @@ import LogoBlue from "../../assets/images/logo_blue.svg";
 import LogoWhite from "../../assets/images/logo_white.svg";
 import { MdHome, MdBusiness, MdBusinessCenter, MdPeople, MdSchedule, MdWork, MdStorage, MdOutlineClose,MdOutlineSettings, MdOutlineLogout } from 'react-icons/md';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { SidebarContext } from "../../context/SidebarContext";
 
@@ -13,7 +14,12 @@ const Sidebar = () => {
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const navbarRef = useRef(null);
   const [activeLink, setActiveLink] = useState("");
+  const navigate = useNavigate('');
   
+  const handleLogout = () => {
+    navigate('/')
+    localStorage.removeItem('selectedDepartment', departmentId);
+  }
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => { 
@@ -54,7 +60,7 @@ const Sidebar = () => {
   <div className="sidebar-menu">
     <ul className="menu-list">
       <li className="menu-item">
-      <Link to="/" className={`menu-link ${activeLink === "/" ? "active" : ""}`} onClick={() => handleMenuClick("/")}>
+      <Link to="/dashboard" className={`menu-link ${activeLink === "/dashboard" ? "active" : ""}`} onClick={() => handleMenuClick("/")}>
           <span className="menu-link-icon">
             <MdHome size={18} />
           </span>
@@ -121,8 +127,8 @@ const Sidebar = () => {
                 <span className="menu-link-text">Settings</span>
               </Link>
             </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
+            <li onClick={handleLogout}  className="menu-item">
+              <Link className="menu-link">
                 <span className="menu-link-icon">
                   <MdOutlineLogout size={20} />
                 </span>

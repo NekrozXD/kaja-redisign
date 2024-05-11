@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedDateRange, setSelectedDateRange] = useState(null);
 
-  // Load selected department from localStorage on component mount
   useEffect(() => {
-    const storedDepartment = localStorage.getItem('selectedDepartment');
+    const storedDepartment = localStorage.getItem("selectedDepartment");
     if (storedDepartment) {
       setSelectedDepartment(storedDepartment);
     }
@@ -14,14 +14,23 @@ const Dashboard = () => {
 
   const handleDepartmentSelect = (departmentId) => {
     setSelectedDepartment(departmentId);
-    // Save selected department to localStorage
-    localStorage.setItem('selectedDepartment', departmentId);
+    localStorage.setItem("selectedDepartment", departmentId);
+  };
+
+  const handleDateRangeSelect = (dateRange) => {
+    setSelectedDateRange(dateRange);
   };
 
   return (
     <div className="content-area">
-      <AreaTop onDepartmentSelect={handleDepartmentSelect} />
-      <AreaCards selectedDepartment={selectedDepartment} />
+      <AreaTop
+        onDepartmentSelect={handleDepartmentSelect}
+        onDateRangeSelect={handleDateRangeSelect}
+      />
+      <AreaCards
+        selectedDepartment={selectedDepartment}
+        selectedDateRange={selectedDateRange}
+      />
       <AreaTable />
     </div>
   );

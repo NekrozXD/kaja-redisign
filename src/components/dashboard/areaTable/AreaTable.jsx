@@ -1,122 +1,66 @@
-import AreaTableAction from "./AreaTableAction";
+import React, { useState ,useEffect} from 'react';
+import axios from 'axios';
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./AreaTable.scss";
+import './AreaTable.scss';
 
-const TABLE_HEADS = [
-  "Employee",
-  "status",
-  "Date",
-  "checkin",
-  "checkout",
-  "Action",
-];
-
-const TABLE_DATA = [
-  {
-    id: 100,
-    name: "Jean",
-    statut: 'absent',
-    date: "Jun 29,2022",
-    checkin: "07:50 am",
-    checkout: "17:00 pm",
-    arrival: "not arrived"
-  },
-  {
-    id: 101,
-    name: "jane",
-    statut: 'absent',
-    date: "Jun 29,2022",
-    checkin: "07:50 am",
-    checkout: "17:00 pm",
-    arrival: "not arrived"
-  },
-  {
-    id: 102,
-    name: "josh guista",
-    statut: 'absent',
-    date: "Jun 29,2022",
-    checkin: "07:50 am",
-    checkout: "17:00 pm",
-    arrival: "not arrived"
-  },
-  {
-    id: 103,
-    name: "Ariana Grande",
-    statut: 'absent',
-    date: "Jun 29,2022",
-    checkin: "07:50 am",
-    checkout: "17:00 pm",
-    arrival: "not arrived"
-  },
-  {
-    id: 104,
-    name: "David Gueto",
-    statut: 'absent',
-    date: "Jun 29,2022",
-    checkin: "07:50 am",
-    checkout: "17:00 pm",
-  arrival: "not arrived"  },
-  {
-    id: 105,
-    name: "Jojo",
-    statut: 'absent',
-    date: "Jun 29,2022",
-    checkin: "07:50 am",
-    checkout: "17:00 pm",
-  arrival: "not arrived"  },
-];
 const AreaTable = () => {
+  const [dateDebut, setDateDebut] = useState('');
+  const [dateFin, setDateFin] = useState('');
+  const [attendanceData, setAttendanceData] = useState(null);
+
+  useEffect(() => {
+    const fetchTodayAttendanceData = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/api/filter_date', {
+          date_debut: new Date().toISOString().split('T')[0],
+          date_fin: new Date().toISOString().split('T')[0],
+        });
+        setAttendanceData(response.data.attendance);
+      } catch (error) {
+        console.error('Error fetching attendance data:', error);
+        // Handle error
+      }
+    };
+
+    fetchTodayAttendanceData();
+  }, []);
+
+
   return (
     <section className="content-area-table">
       <div className="data-table-info">
         <h4 className="data-table-title">Attendance</h4>
       </div>
       <div className="data-table-diagram">
-        <table>
-          <thead style={{ textAlign: 'center' }}>
-            <tr>
-              {TABLE_HEADS?.map((th, index) => (
-                <th key={index}>{th}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {TABLE_DATA?.map((dataItem) => {
-              return (
-                <tr key={dataItem.id}>
-                  <td style={{width:'250px'}}>
-                    <div style={{display:'flex', flexDirection:'row'}}>
-                    <div style={{ marginLeft: '25px', border:'1px solid grey', height:'50px', width:'50px', borderRadius:'50%', alignItems:'center', justifyContent:'center', display:'flex' , backgroundColor:'var(--thead-bg-color)'}}>
-                      <FontAwesomeIcon color={'grey'} icon={faUser} />
-                    </div>      
-                    <div style={{marginLeft:'5px', padding:'15px'}}>{dataItem.name}</div>                                     
-                    </div>
-                  </td>
-                  <td style={{ width: '200px' }}>
-                    <div className="div-status" style={{background:'var(--gradient)', width: '200px', display: 'flex', alignItems: 'center', textAlign: 'center', borderRadius: '4px', padding: '15px' }}>
-                      <span><p>Arrival: </p><p>{dataItem.arrival}</p></span>
-                      <span style={{ border: '1px solid #0e574f', marginLeft: 'auto', padding: '5px', borderRadius: '4px', backgroundColor: 'red', color: 'white' }}>{dataItem.statut}</span>
-                    </div>
-                  </td>
-                  <td>{dataItem.date}</td>
-                  <td>{dataItem.checkin}</td>
-                  <td>
-                    <div className="dt-checkout">
-                      <span
-                        className={`dt-checkout-dot dot-${dataItem.checkout}`}
-                      ></span>
-                      <span className="dt-checkout-text">{dataItem.checkout}</span>
-                    </div>
-                  </td>
-                  <td className="dt-cell-action">
-                    <AreaTableAction />
-                  </td>
+        {attendanceData && (
+          <table>
+            <thead style={{textAlign:'center'}}>
+              <tr>
+                <th>ID</th>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Presence</th>
+                <th>Retard</th>
+                <th>Value Retard</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {attendanceData.map((attendance) => (
+                <tr key={attendance.id_employee}>
+                  <td>{attendance.id_employee}</td>
+                  <td>{attendance.employee}</td>
+                  <td>{attendance.department}</td>
+                  <td>{attendance.presence ? 'Present' : 'Absent'}</td>
+                  <td>{attendance.retard ? 'Yes' : 'No'}</td>
+                  <td>{attendance.value_retard}</td>
+                  <td>{attendance.date}</td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </section>
   );

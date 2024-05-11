@@ -36,70 +36,81 @@ const WorkhourForm = () => {
         }));
     };
 
+    const fetchWorkhour = async () => {
+        const response = await axios.get("http://localhost:8000/api/workhours-with-lines");
+        return response.data;
+    };
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/api/workhours', workhourData);
-            setCreatedWorkhour(response.data.id);
-
+            await handleCreateWorkhourLines(); 
+            await fetchWorkhour(); 
             setShowWorkhourLineInputs(true);
-
-            toast.success('workhour created succesfully');
         } catch (error) {
             console.error('Error creating workhour:', error);
             alert('An error occurred while creating workhour.');
         }
     };
+    
 
     const handleCreateWorkhourLines = async () => {
         try {
-            if (!createdWorkhour) {
-                alert('Please create a workhour first.');
-                return;
+            let workhourId = createdWorkhour;
+    
+            if (!workhourId) {
+                // Create the workhour if it hasn't been created yet
+                const response = await axios.post('http://localhost:8000/api/workhours', workhourData);
+                workhourId = response.data.id;
+    
+                toast.success('workhour created successfully');
+                setCreatedWorkhour(workhourId); // Set the created workhour ID
             }
+    
             setIsLoading(true);
             for (const day of selectedDays) {
                 const checkin_am = workhourData[`checkin_am_${day}`];
                 const checkout_am = workhourData[`checkout_am_${day}`];
                 const checkin_pm = workhourData[`checkin_pm_${day}`];
                 const checkout_pm = workhourData[`checkout_pm_${day}`];
-    
+        
                 if (!checkin_am || !checkout_am || !checkin_pm || !checkout_pm) {
                     alert('Please fill in all check-in and check-out times for each selected day.');
                     return;
                 }
-    
+        
                 console.log('Workhourline data:', {
                     jour: day,
-                    checkin_am: workhourData[`checkin_am_${day}`],
-                    checkout_am: workhourData[`checkout_am_${day}`],
-                    checkin_pm: workhourData[`checkin_pm_${day}`],
-                    checkout_pm: workhourData[`checkout_pm_${day}`],
-                    id_work_hours: createdWorkhour
+                    checkin_am,
+                    checkout_am,
+                    checkin_pm,
+                    checkout_pm,
+                    id_work_hours: workhourId
                 });
-    
+        
                 await axios.post('http://localhost:8000/api/workhourlines', {
                     jour: day,
                     checkin_am,
                     checkout_am,
                     checkin_pm,
                     checkout_pm,
-                    id_work_hours: createdWorkhour
+                    id_work_hours: workhourId
                 });
             }
-    
-        const response = await axios.get(`http://localhost:8000/api/workhours/${createdWorkhour}`);
-        const existingWorkhourData = response.data;
-            console.log(existingWorkhourData)
-        let totalMinutes = selectedDays.reduce((total, day) => total + calculateTotalMinutes(day), 0);
-        let totalHours = totalMinutes / 60; 
-        console.log('Total Hours:', totalHours);
-
-        existingWorkhourData.total_hour = totalHours;
-        await axios.put(`http://localhost:8000/api/workhours/${createdWorkhour}`, existingWorkhourData);
-
         
-        }  catch (error) {
+            const response = await axios.get(`http://localhost:8000/api/workhours/${workhourId}`);
+            const existingWorkhourData = response.data;
+            console.log(existingWorkhourData)
+            let totalMinutes = selectedDays.reduce((total, day) => total + calculateTotalMinutes(day), 0);
+            let totalHours = totalMinutes / 60; 
+            console.log('Total Hours:', totalHours);
+    
+            existingWorkhourData.total_hour = totalHours;
+            await axios.put(`http://localhost:8000/api/workhours/${workhourId}`, existingWorkhourData);
+    
+            toast.success('workhour lines created successfully');
+        } catch (error) {
             console.error('Error creating workhourlines:', error);
             alert('An error occurred while creating workhourlines.');
         } finally {
@@ -112,12 +123,6 @@ const WorkhourForm = () => {
             total_hour: '1',
             delay_tolerance: ''
         });
-        // Swal.fire({
-        //     title: "Success!",
-        //     text: "Workhour created succesfully !!",
-        //     icon: "success"
-        //   });
-        toast.success('workhour lines created succesfully');
     };
     
     const calculateTotalMinutes = (day) => {
@@ -182,9 +187,7 @@ const WorkhourForm = () => {
                         ))}
                     </div>
                 </div>
-    
-                <button type="submit">Create Workhour</button>
-            </form>
+         
     
             {showWorkhourLineInputs && (
                 <>
@@ -239,9 +242,12 @@ const WorkhourForm = () => {
                             ))}
                         </tbody>
                     </table>
-                    <button onClick={handleCreateWorkhourLines}>insert workhourlines</button>
                 </>
+                
             )}
+                
+                <button type="submit">Create Workhour</button>
+                </form>
             {isLoading && (
                 <div className="loading-overlay">
                     <div className="spinner">

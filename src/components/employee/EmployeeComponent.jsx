@@ -275,7 +275,7 @@
                     <div>
                         <header style={{background:'var(--thead-bg-color)',padding: '10px', textAlign: 'center', color: 'white', fontWeight: 'bolder', display:'flex' , textAlign:'center', justifyContent:'center', alignItems:'center', color:'var(--base-text-color)'}}>
                     <p style={{  padding:'15px', backgroundColor:'var(--primary-color)',color:'white', borderRadius:'4px', width:'80%'}} >Employee list</p> 
-                 <div>
+                 <div style={{display:'flex', flexDirection:'row'}}>
                     <label htmlFor="department">Select a department:</label>
                     <select id="department" onChange={(e) => {
                         console.log("Selected department ID:", e.target.value);
@@ -286,33 +286,11 @@
                             <option key={department.id} value={department.id}>{department.coded}</option>
                         ))}
                     </select>
-                </div>
-                <div>
-                    <label htmlFor="workhour">Select a workhour:</label>
-                    <select id="workhour" onChange={(e) => {
-                        console.log("Selected workhour ID:", e.target.value);
-                        setSelectedFilters({...selectedFilters, workhour_id: e.target.value});
-                    }}>
-                        <option value="">All Workhours</option>
-                        {workhours && workhours.workhours && workhours.workhours.map((workhour) => (
-                            <option key={workhour.id} value={workhour.id}>{workhour.nom}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="society">Select a society:</label>
-                    <select id="society" onChange={(e) => {
-                        console.log("Selected society ID:", e.target.value);
-                        setSelectedFilters({...selectedFilters, society_id: e.target.value});
-
-                    }}>
-                        <option value="">All Societies</option>
-                        {societies.map((society) => (
-                            <option key={society.id} value={society.id}>{society.company_name}</option>
-                        ))}
-                    </select>
-                </div>
+                    <span>&nbsp;;</span>
+                    
                 <button onClick={filterEmployees}>Filter Employees</button>
+
+                </div>
 
                         <button onClick={toggleCsvImport}>Import CSV</button>
                         <button onClick={handleOpen}>Add Employee</button>

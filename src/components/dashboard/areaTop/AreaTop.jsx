@@ -1,3 +1,5 @@
+// AreaTop.jsx
+
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { MdOutlineMenu } from 'react-icons/md';
@@ -8,9 +10,8 @@ import { addDays } from 'date-fns';
 import { DateRange } from 'react-date-range';
 import './AreaTop.scss';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import AreaCards from '../areaCards/AreaCards';
 
-const AreaTop = ({ onDepartmentSelect }) => {
+const AreaTop = ({ onDepartmentSelect, onDateRangeSelect }) => {
   const { openSidebar } = useContext(SidebarContext);
   const [state, setState] = useState([
     {
@@ -40,7 +41,11 @@ const AreaTop = ({ onDepartmentSelect }) => {
     onDepartmentSelect(e.target.value); 
   };
   
-
+  const handleDateRangeSelect = (ranges) => {
+    setState([ranges.selection]);
+    onDateRangeSelect(ranges.selection); // Pass the selected date range
+  };
+  
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -100,13 +105,14 @@ const AreaTop = ({ onDepartmentSelect }) => {
           className={`date-range-wrapper ${!showDatePicker ? 'hide-date-range' : ''}`}
           onClick={handleInputClick}
         >
-          <DateRange
-            editableDateInputs={true}
-            onChange={(item) => setState([item.selection])}
-            moveRangeOnFirstSelection={false}
-            ranges={state}
-            showMonthAndYearPickers={false}
-          />
+         <DateRange
+        editableDateInputs={true}
+        onChange={(item) => handleDateRangeSelect(item)} // Use handleDateRangeSelect here
+        moveRangeOnFirstSelection={false}
+        ranges={state}
+        showMonthAndYearPickers={false}
+      />
+
         </div>
       </div>
     </section>

@@ -4,6 +4,8 @@ import { LIGHT_THEME } from "../../constants/themeConstants";
 import LogoBlue from "../../assets/images/logo_blue.svg";
 import LogoWhite from "../../assets/images/logo_white.svg";
 import { MdHome, MdBusiness, MdBusinessCenter, MdPeople, MdSchedule, MdWork, MdStorage, MdOutlineClose,MdOutlineSettings, MdOutlineLogout } from 'react-icons/md';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
@@ -60,7 +62,7 @@ const Sidebar = () => {
   <div className="sidebar-menu">
     <ul className="menu-list">
       <li className="menu-item">
-      <Link to="/dashboard" className={`menu-link ${activeLink === "/dashboard" ? "active" : ""}`} onClick={() => handleMenuClick("/")}>
+      <Link to="/dashboard" className={`menu-link ${activeLink === "/dashboard" ? "active" : ""}`} onClick={() => handleMenuClick("/dashboard")}>
           <span className="menu-link-icon">
             <MdHome size={18} />
           </span>
@@ -115,12 +117,20 @@ const Sidebar = () => {
           <span className="menu-link-text">Materials</span>
         </Link>
       </li>
+      <li className="menu-item">
+      <Link to="/Attendance" className={`menu-link ${activeLink === "/Attendance" ? "active" : ""}`} onClick={() => handleMenuClick("/Attendance")}>
+          <span className="menu-link-icon">
+            <FontAwesomeIcon icon={faClock} size={18} />
+          </span>
+          <span className="menu-link-text">Attendance</span>
+        </Link>
+      </li>
     </ul>
   </div>
         <div className="sidebar-menu sidebar-menu2">
           <ul className="menu-list">
             <li className="menu-item">
-              <Link to="/" className="menu-link">
+              <Link to="/settings" className="menu-link">
                 <span className="menu-link-icon">
                   <MdOutlineSettings size={20} />
                 </span>

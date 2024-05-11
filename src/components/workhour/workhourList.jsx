@@ -19,9 +19,13 @@ const WorkhourMapping = () => {
                 console.error('Error fetching data:', error);
             }
         };
-
+    
         fetchData();
+    
+        const interval = setInterval(fetchData, 1000);
+        return () => clearInterval(interval);
     }, []);
+    
 
     const convertDecimalToHoursAndMinutes = (decimalHours) => {
         const hours = Math.floor(decimalHours);

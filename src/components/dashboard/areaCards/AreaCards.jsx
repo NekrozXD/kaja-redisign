@@ -29,6 +29,7 @@ const AreaCards = ({ selectedDepartment }) => {
     .then(response => {
       setEmployees(response.data.attendance);
       console.log(employees);
+      console.log(response.data);
     })
     .catch(error => {
       console.error('Error filtering employees:', error);
@@ -102,7 +103,7 @@ const AreaCards = ({ selectedDepartment }) => {
   const totalEmployees = employees.length;
   const presentEmployees = employees.filter(employee => employee.presence);
   const absentEmployees = employees.filter(employee => !employee.presence);
-  const lateEmployees = employees.filter(employee => employee.late).length;
+  const lateEmployees = employees.filter(employee => employee.retard).length;
 
   const presentPercentage = totalEmployees > 0 ? ((presentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
   const absentPercentage = totalEmployees > 0 ? ((absentEmployees.length / totalEmployees) * 100).toFixed(2) : 0;
